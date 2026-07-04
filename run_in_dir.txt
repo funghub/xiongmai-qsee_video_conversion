@@ -1,0 +1,5 @@
+find . -type f -name "*.mp4" ! -name "*-output.mp4" -print0 | \
+xargs -0 -n 1 -I {} sh -c 'ffmpeg -y -r 25 -f h264 -i "$1" -c copy "${1%.mp4}-output.mp4" < /dev/null' _ {} \
+&& for f in *-output.mp4; do echo "file '$PWD/$f'"; done | sort > filelist.txt \
+&& ffmpeg -f concat -safe 0 -i filelist.txt -c copy combined.mp4 \
+&& rm -f -- *-output.mp4
