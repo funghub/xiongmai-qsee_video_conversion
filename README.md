@@ -55,6 +55,12 @@ xargs -0 -n 1 -I {} sh -c 'ffmpeg -y -r 25 -f h264 -i "$1" -c copy "${1%.mp4}-ou
 
 > **Note on Framerates:** This script fixes the "3-second fast forward" bug by setting `-r 25` (25 frames per second). If your original camera settings were configured differently and the video speed looks slightly unnatural, adjust `-r 25` to `-r 30` (NTSC standard) or down to `-r 15` / `-r 12` (common space-saving security framerates).
 
+Run the following command in your terminal if you do not wish to combine/aggregate the videos into one combined file:
+```bash
+find . -type f -name "*.mp4" ! -name "*-output.mp4" -print0 | \
+xargs -0 -n 1 -I {} sh -c 'ffmpeg -y -r 25 -f h264 -i "$1" -c copy "${1%.mp4}-output.mp4" < /dev/null' _ {}
+```
+
 ## How it Works Under the Hood
 
 1. **`find . ... -print0 | xargs -0`**: Safely crawls down your `videoout` directories recursively, completely bypassing spaces or weird character encoding native to embedded Linux filesystems.
