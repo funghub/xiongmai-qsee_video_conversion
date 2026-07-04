@@ -1,7 +1,10 @@
+# Quick Start
 To run as a script:
+
 convert.sh
 	
 To run in a directory of the .mp4 files:
+
 run_in_dir.txt
 
 
